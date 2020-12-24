@@ -265,14 +265,14 @@ class RepalceJsonValue:
 
     def _is_dict(self, o, v):
         for key, value in o.items():
-            if key == self.goal_key:
+            if key == self.goal_key and value != "":
                 o[key] = v
             else:
                 self.get_re(value, v)
 
     def _is_list(self, o, v):
         for i in o:
-            self.get_re(i)
+            self.get_re(i, v)
 
     def get_re(self, o, v):
         if isinstance(o, dict):
