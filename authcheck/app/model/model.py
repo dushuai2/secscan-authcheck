@@ -120,7 +120,9 @@ class BodyModel(object):
 
         if isinstance(content, str):  # body -> str
             try:
+                print("before content is ", content)
                 self.content = json.loads(content)  # json格式
+                print("after content is ", content)
                 self.type = BodyModel.TYPE_JSON
             except JSONDecodeError:
                 self.content = content.strip()  # 字符串（还应该有xml格式的解析）
@@ -136,7 +138,45 @@ class BodyModel(object):
             return
         if self.type == BodyModel.TYPE_JSON:
             assert isinstance(self.content, dict)
-            self.content.update(kv)
+            # 替换指定字段的方案
+            print("before update kv is ", kv)
+            for k,v in kv.items():
+                pattern = RepalceJsonValue(k)
+                newkv = pattern.get_re(self.content, v)
+                print("after update kv is ", newkv)
+                self.content.update(newkv)
+
+            # newkv = re.sub('"', '', str(kv))
+            # newkv = re.sub("'", '"', newkv)
+            # newkv = re.sub('None', 'null', newkv)
+            # newkv = json.loads(newkv)
+            # print(type(newkv))
+            # rjv = RepalceJsonValue("operator")
+            # print(rjv.get_re(newkv, '100671'))
+
+            # 整体替换的方案
+            # # 替换kv字典的值的双引号为单引号
+            # print("before update kv is ", kv)
+            # newkv = re.sub('"', "'", str(kv))
+            # # 替换kv字典的值的null为None
+            # newkv = re.sub('null', 'None', newkv)
+            # # 删除kv值中花括号外面的单引号
+            # newkv = re.sub("'{", "{", str(newkv))
+            # newkv = re.sub("}'", "}", newkv)
+            # newkv = eval(newkv)
+            # print("after update kv is ", newkv)
+            # 原始代码
+            # self.content.update(newkv)
+
+            # 废弃
+            # print("before update content is ", self.content)
+            # # 去除content字典的值的双引号
+            # newcontent = re.sub('"', '', str(self.content))
+            # # 替换content字典的值的null为None
+            # newcontent = re.sub('null', 'None', newcontent)
+            # print("after update content is ", newcontent)
+            # self.content = eval(newcontent)
+
         elif self.type == BodyModel.TYPE_FORM:
             assert isinstance(self.content, str)
             for k, v in kv.items():
@@ -214,3 +254,30 @@ class TaskModel(BasicModel):
         self.raw = raw
 
 # ====================================== ↑ 扫描队列model ↑ ==========================================
+
+class RepalceJsonValue:
+    """
+    替换指定key的value为空
+    """
+
+    def __init__(self, goal_key):
+        self.goal_key = goal_key
+
+    def _is_dict(self, o, v):
+        for key, value in o.items():
+            if key == self.goal_key and value != "":
+                o[key] = v
+            else:
+                self.get_re(value, v)
+
+    def _is_list(self, o, v):
+        for i in o:
+            self.get_re(i, v)
+
+    def get_re(self, o, v):
+        if isinstance(o, dict):
+            self._is_dict(o, v)
+            return o
+        elif isinstance(o, list):
+            self._is_list(o, v)
+            return o

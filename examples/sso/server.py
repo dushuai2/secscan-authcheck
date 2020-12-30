@@ -1,6 +1,7 @@
 # coding: utf-8
 from enum import Enum
 from datetime import datetime, timedelta
+from werkzeug.utils import cached_property
 from flask import g, render_template, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship

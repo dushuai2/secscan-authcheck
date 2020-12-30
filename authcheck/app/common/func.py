@@ -4,7 +4,7 @@ import base64
 from json import JSONDecodeError
 from app.model.po import *
 from flask import session
-
+from datetime import datetime, timezone, timedelta
 
 def str_show(s):
     """
@@ -90,11 +90,21 @@ def time_show(t):
     :param t:
     :return:
     """
-    return time.ctime(t)
+    beijing = timezone(timedelta(hours=8))
+    utc = timezone.utc  # 获取 UTC 的时区对象
+    utc_time = datetime.utcnow().replace(tzinfo=utc)  # 强制转换加上 UTC 时区。此处敲黑板，需要特别注意。
+    time_beijing = utc_time.astimezone(beijing).ctime()
+    return time_beijing
+    # return time.ctime(t)
 
 
 def time_now():
-    return time.ctime()
+    beijing = timezone(timedelta(hours=8))
+    utc = timezone.utc  # 获取 UTC 的时区对象
+    utc_time = datetime.utcnow().replace(tzinfo=utc)  # 强制转换加上 UTC 时区。此处敲黑板，需要特别注意。
+    time_beijing = utc_time.astimezone(beijing).ctime()
+    return time_beijing
+    # return time.ctime()
 
 
 def request_num(ws_id):

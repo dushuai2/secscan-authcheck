@@ -10,7 +10,33 @@ from app.model.model import *
 from app.model.exception import *
 from app.common.util import deal_request, gen_banner
 from concurrent.futures import ThreadPoolExecutor
+from datetime import timedelta, datetime, tzinfo
 
+class GMT8(tzinfo):
+    def utcoffset(self, dt):
+        return timedelta(hours=8) + self.dst(dt)
+
+    def dst(self, dt):
+        d = datetime(dt.year, 4, 1)
+        self.dston = d - timedelta(days=d.weekday() + 1)
+        d = datetime(dt.year, 11, 1)
+        self.dstoff = d - timedelta(days=d.weekday() + 1)
+        if self.dston <= dt.replace(tzinfo=None) < self.dstoff:
+            return timedelta(hours=1)
+        else:
+            return timedelta(0)
+
+    def tzname(self, dt):
+        return "GMT +8"
+
+class ctime_convert():
+    def convert(self):
+        ctime_init = datetime(datetime.utcnow().year, datetime.utcnow().month, datetime.utcnow().day,
+                              datetime.utcnow().hour, datetime.utcnow().minute, datetime.utcnow().second).astimezone(
+            GMT8()).ctime()
+        converttime = datetime.strptime(ctime_init, "%a %b %d %H:%M:%S %Y")
+        print("Traffic ctime is " + str(converttime))
+        return converttime
 
 def conf_workspace(_id, data: dict):
     """
@@ -210,7 +236,7 @@ def deal_scan(name, header: HeaderModel, body: BodyModel, ws: Workspace, roles) 
                     role_describe="原始包", request=request_model, response=response_model)
 
     rp.save()
-    packet_record = PacketRecord(ws_id=ws.id, username=name, raw_packet=rp)
+    packet_record = PacketRecord(ws_id=ws.id, username=name, raw_packet=rp, ctime=ctime_convert().convert())
 
     try:
         if ws.system_type in [Workspace.TYPE_SSO]:  # 示例sso认证

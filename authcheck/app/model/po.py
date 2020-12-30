@@ -1,8 +1,36 @@
 import re
 import datetime
+# from datetime import datetime, timezone, timedelta
+# from datetime import timedelta, datetime, tzinfo
 from mongoengine import *
 from mongoengine.base import BaseField
 
+
+# class GMT8(tzinfo):
+#     def utcoffset(self, dt):
+#         return timedelta(hours=10) + self.dst(dt)
+#
+#     def dst(self, dt):
+#         d = datetime(dt.year, 4, 1)
+#         self.dston = d - timedelta(days=d.weekday() + 1)
+#         d = datetime(dt.year, 11, 1)
+#         self.dstoff = d - timedelta(days=d.weekday() + 1)
+#         if self.dston <= dt.replace(tzinfo=None) < self.dstoff:
+#             return timedelta(hours=1)
+#         else:
+#             return timedelta(0)
+#
+#     def tzname(self, dt):
+#         return "GMT +10"
+#
+# class ctime_convert():
+#     def convert(self):
+#         ctime_init = datetime(datetime.utcnow().year, datetime.utcnow().month, datetime.utcnow().day,
+#                               datetime.utcnow().hour, datetime.utcnow().minute, datetime.utcnow().second).astimezone(
+#             GMT8()).ctime()
+#         converttime = datetime.strptime(ctime_init, "%a %b %d %H:%M:%S %Y")
+#         print("ctime1 is " + str(converttime))
+#         return converttime
 
 # ================================= ↓ example sso ↓ ========================================
 class SsoAccount(Document):
@@ -62,6 +90,18 @@ class Workspace(Document):
     """
     工作空间
     """
+    # beijing = timezone(timedelta(hours=8))
+    # utc_time = datetime.utcnow()  # 获取当前 UTC 时间
+    # utc = timezone.utc  # 获取 UTC 的时区对象
+    # utc_time = datetime.utcnow().replace(tzinfo=utc)  # 强制转换加上 UTC 时区。此处敲黑板，需要特别注意。
+    # ctime = DateTimeField(default=utc_time.astimezone(beijing).utcnow())
+    # ctime = DateTimeField(default=datetime.timedelta(hours=8))
+    # ctime_init = datetime(datetime.utcnow().year, datetime.utcnow().month, datetime.utcnow().day,
+    #          datetime.utcnow().hour, datetime.utcnow().minute, datetime.utcnow().second).astimezone(GMT8()).ctime()
+    # ctime_convert = datetime.strptime(ctime_init, "%a %b %d %H:%M:%S %Y")
+    # ctime = DateTimeField(default=ctime_convert)
+    # print("ctime2 is " + str(ctime_convert().convert()))
+    # ctime = DateTimeField(default=ctime_convert().convert())
     ctime = DateTimeField(default=datetime.datetime.utcnow)
     cname = StringField(required=True)
     status = StringField(required=True, default='init')
@@ -157,9 +197,21 @@ class PacketRecord(Document):
     """
     流量包
     """
+    # beijing = timezone(timedelta(hours=8))
+    # utc_time = datetime.utcnow()  # 获取当前 UTC 时间
+    # utc = timezone.utc  # 获取 UTC 的时区对象
+    # utc_time = datetime.utcnow().replace(tzinfo=utc)  # 强制转换加上 UTC 时区。此处敲黑板，需要特别注意。
+    # ctime = DateTimeField(default=utc_time.astimezone(beijing).utcnow())
+    # ctime_init = datetime(datetime.utcnow().year, datetime.utcnow().month, datetime.utcnow().day,
+    #                       datetime.utcnow().hour, datetime.utcnow().minute, datetime.utcnow().second).astimezone(GMT8()).ctime()
+    # ctime_convert = datetime.strptime(ctime_init, "%a %b %d %H:%M:%S %Y")
+    # ctime = DateTimeField(default=ctime_convert)
+    # print("ctime3 is " + str(ctime_convert().convert()))
+    # ctime = DateTimeField(default=ctime_convert().convert())
+    ctime = DateTimeField(default=datetime.datetime.utcnow)
     ws_id = ObjectIdField(required=True)
     username = StringField(required=True)  # 标识用户身份
-    ctime = DateTimeField(default=datetime.datetime.utcnow)
+    # ctime = DateTimeField(default=datetime.datetime.utcnow)
     is_delete = BooleanField(default=False)  # 删除标识
 
     raw_packet = ReferenceField(PacketData)

@@ -17,6 +17,26 @@ users = {
     'normal': {
         'password': 'normal123',
         'role': [PolicyEnum.ACCESS.value]
+    },
+    'joyfeng': {
+        'password': 'joyfeng',
+        'role': [PolicyEnum.ACCESS.value]
+    },
+    'tezhou': {
+        'password': 'tezhou',
+        'role': [PolicyEnum.ACCESS.value]
+    },
+    'fayliu': {
+        'password': 'fayliu',
+        'role': [PolicyEnum.ACCESS.value]
+    },
+    'zoeyzhao': {
+        'password': 'zoeyzhao',
+        'role': [PolicyEnum.ACCESS.value]
+    },
+    'jameshen': {
+        'password': 'jameshen',
+        'role': [PolicyEnum.ACCESS.value]
     }
 }
 
