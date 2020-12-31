@@ -105,9 +105,13 @@ def req_parse():
 
     rs = redis.Redis(connection_pool=redis_pool)
     name = None
+
     for k, v in rs.hscan_iter("user_identify"):
+        print("k is ", str(k))
+        print("v is ", str(v))
         if v.decode('utf-8') == uid:
             name = k.decode('utf-8')
+            print("name is ", str(name))
             break
 
     if not name:

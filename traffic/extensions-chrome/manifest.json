@@ -1,7 +1,7 @@
 {
   "name": "authcheck",
   "version": "1.0",
-  "description": "越权检测工具",
+  "description": "BDH功能及安全测试平台",
   "permissions": [
     "storage",
     "declarativeContent",

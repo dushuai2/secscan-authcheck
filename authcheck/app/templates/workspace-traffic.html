@@ -15,7 +15,7 @@
                 <input type="text" id="nor_banner" name="nor_banner" placeholder="！信息" autocomplete="off"
                        class="layui-input" style="width: 20%;"
                        value="{{ nor_banner }}">
-                <button onclick="" class="layui-btn" lay-submit="" lay-filter="sreach"><i
+                <button onclick="" class="layui-btn" lay-submit="" lay-filter="search"><i
                         class="layui-icon">&#xe615;</i></button>
 
                 <a id="cc" class="layui-btn layui-btn-small" style="line-height:1.6em;
@@ -314,7 +314,7 @@
                     "nor_banner": $("#nor_banner").val(),
                     'suspect': $("#suspect")[0].checked ? $("#suspect").val() : ""
                 }), function (data) {
-                    if (data.flag) {
+                    if (data.flag || true) {
                         WsListening.top = data.data;
                         polling(data.data);
 

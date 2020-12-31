@@ -1,10 +1,10 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
+﻿// Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 'use strict';
 
-var base_url = prompt("请输入服务器地址", "http://192.168.17.129:8888");
+var base_url = prompt("请输入服务器地址", "http://116.62.110.15:8888");
 
 
 chrome.storage.sync.set({'base_url': base_url}, function () {

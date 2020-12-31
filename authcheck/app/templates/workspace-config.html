@@ -29,12 +29,12 @@
 
             <div class="layui-tab layui-tab-brief" lay-filter="auth-tab">
                 <ul class="layui-tab-title">
-                    <li lay-id="sso" class="layui-this">sso认证</li>
-                    <li lay-id="auth">手动录入</li>
+                    <li lay-id="sso">sso认证</li>
+                    <li lay-id="auth" class="layui-this">手动录入</li>
                 </ul>
                 <div class="layui-tab-content">
                     <!-- sso认证 -->
-                    <div class="layui-tab-item layui-show">
+                    <div class="layui-tab-item">
                         <div class="layui-form-item">
                             <label class="layui-form-label">入口url</label>
                             <div class="layui-input-inline">
@@ -88,7 +88,7 @@
                     </div>
 
                     <!-- 手动认证 -->
-                    <div class="layui-tab-item">
+                    <div class="layui-tab-item layui-show">
                         <div class="layui-collapse" lay-accordion id="auth_panel">
                             <div class="layui-colla-item auth-collapse">
                                 <h2 class="layui-colla-title">
@@ -245,7 +245,7 @@
                 "/api/workspace/" + ws_id + "/config";
             $.get(url, function (msg) {
                 let data = msg.data;
-
+                data.system_type = data.system_type || 'direct'; // 默认切换到手工输入标签
                 if (data.system_type === 'direct') {
                     element.tabChange('auth-tab', 'auth');
                 } else {
