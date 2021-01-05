@@ -393,27 +393,27 @@
                 auth['auth_args'] = {};
                 auth['auth_param'] = {};
 
-                /*if (auth.describe.trim() !== "") {*/
-				$.each($(item).find("input[name='header_key']"), function (_i, _item) {
-					if (_item.value.trim() !== "") {
-						auth['auth_header'][_item.value.trim()] =
-							$($(_item).parent().next()[0]).find("input")[0].value.trim();
-					}
-				});
-				$.each($(item).find("input[name='get_key']"), function (_i, _item) {
-					if (_item.value.trim() !== "") {
-						auth['auth_args'][_item.value.trim()] =
-							$($(_item).parent().next()[0]).find("input")[0].value.trim();
-					}
-				});
-				$.each($(item).find("input[name='post_key']"), function (_i, _item) {
-					if (_item.value.trim() !== "") {
-						auth['auth_param'][_item.value.trim()] =
-							$($(_item).parent().next()[0]).find("input")[0].value.trim();
-					}
-				});
-				workspace_auth.push(auth);
-                /*}*/
+                if (auth.describe.trim() !== "") {
+                    $.each($(item).find("input[name='header_key']"), function (_i, _item) {
+                        if (_item.value.trim() !== "") {
+                            auth['auth_header'][_item.value.trim()] =
+                                $($(_item).parent().next()[0]).find("input")[0].value.trim();
+                        }
+                    });
+                    $.each($(item).find("input[name='get_key']"), function (_i, _item) {
+                        if (_item.value.trim() !== "") {
+                            auth['auth_args'][_item.value.trim()] =
+                                $($(_item).parent().next()[0]).find("input")[0].value.trim();
+                        }
+                    });
+                    $.each($(item).find("input[name='post_key']"), function (_i, _item) {
+                        if (_item.value.trim() !== "") {
+                            auth['auth_param'][_item.value.trim()] =
+                                $($(_item).parent().next()[0]).find("input")[0].value.trim();
+                        }
+                    });
+                    workspace_auth.push(auth);
+                }
             });
 
             $.ajax({

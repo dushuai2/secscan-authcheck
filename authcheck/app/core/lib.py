@@ -107,25 +107,27 @@ def pr_replay(name, pr: PacketRecord):
     body.content = req.body_content
     body.type = req.body_type
 
+    roles = ""
+
     ws = Workspace.objects(id=pr.ws_id)[0]
     assert isinstance(ws, Workspace)
 
     if ws.system_type == Workspace.TYPE_DIRECT:
         auth_infos = WorkspaceAuth.objects(ws_id=ws.id)
-        if len(auth_infos) == 0:
-            raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
-        ai = auth_infos[0]
-        if len(ai.auth_info) == 0:
-            raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
-        roles = ai
+        if len(auth_infos) > 0:
+            # raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
+            ai = auth_infos[0]
+            if len(ai.auth_info) > 0:
+                # raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
+                roles = ai
     else:
         wos = WorkspaceSso.objects(ws_id=ws.id)
-        if len(wos) == 0:
-            raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
-        wo = wos[0]
-        if len(wo.roles.items()) == 0:
-            raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
-        roles = wo
+        if len(wos) > 0:
+            # raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
+            wo = wos[0]
+            if len(wo.roles.items()) > 0:
+                # raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
+                roles = wo
 
     return deal_scan(name=name, header=header, body=body, ws=ws, roles=roles)
 
@@ -177,24 +179,27 @@ def get_roles(ws):
     :param ws:
     :return:
     """
+    roles = ""
+
     if ws.system_type == Workspace.TYPE_DIRECT:
         auth_infos = WorkspaceAuth.objects(ws_id=ws.id)
-        if len(auth_infos) == 0:
-            raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
-        ai = auth_infos[0]
-        if len(ai.auth_info) == 0:
-            raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
-        roles = ai
+        if len(auth_infos) > 0:
+            # raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
+            ai = auth_infos[0]
+            if len(ai.auth_info) > 0:
+                # raise LibException("{} {} have no roles!".format(ws.id, ws.system_name))
+                roles = ai
     elif ws.system_type in Workspace.TYPE_SSO:
         wos = WorkspaceSso.objects(ws_id=ws.id)
-        if len(wos) == 0:
-            raise LibException("{} {} have no roles!".format(ws.id, ws.system_type))
-        wo = wos[0]
-        if len(wo.roles.items()) == 0:
-            raise LibException("{} {} have no roles!".format(ws.id, ws.system_type))
-        roles = wo
+        if len(wos) > 0:
+            # raise LibException("{} {} have no roles!".format(ws.id, ws.system_type))
+            wo = wos[0]
+            if len(wo.roles.items()) > 0:
+                # raise LibException("{} {} have no roles!".format(ws.id, ws.system_type))
+                roles = wo
     else:
         raise LibException("未知的系统类型: {} {}".format(ws.id, ws.system_type))
+
     return roles
 
 
